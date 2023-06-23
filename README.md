@@ -1,5 +1,8 @@
 # Scratch
 This app is  MIT Scratch clone app where it performs some of the functions which are in the MIT Scratch Clone app.
+For running this app you should install node modules first so use command npm install and after that install navigation files too.
+
+
 
 ![WhatsApp Image 2023-06-23 at 23 41 15](https://github.com/nikki312/Scratch/assets/111264338/2bcdf388-afe9-4a48-a879-01d8adce8e34)
 
