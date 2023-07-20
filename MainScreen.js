@@ -10,7 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 
-const MainScreen = ({ navigation }) => {
+const MainScreen = ({ navigation, route }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageData, setImageData] = useState([
     require('./assets/sprite.png'),
@@ -72,25 +72,21 @@ const MainScreen = ({ navigation }) => {
   const handleCoordinateAction = (actions) => {
     actions.forEach((action, index) => {
       setTimeout(() => {
-        if (action.type === 'moveX') {
-          moveByCoordinates(action.value, 0);
-        } else if (action.type === 'moveY') {
-          moveByCoordinates(0, action.value);
-        } else if (action.type === 'moveXY') {
-          moveByCoordinates(action.valueX, action.valueY);
-        } else if (action.type === 'goToOrigin') {
+        if (action === 'moveXby50') {
+          moveByCoordinates(50, 0);
+        } else if (action === 'moveYby50') {
+          moveByCoordinates(0, 50);
+        } else if (action === 'moveXYby50') {
+          moveByCoordinates(50, 50);
+        } else if (action === 'goToOrigin') {
           setCoordinates({ x: 0, y: 0 });
+        } else if (action === 'sayHello') {
+          setInputText('Hello');
+        } else if (action === 'thinkHmm') {
+          setInputText('Hmm');
         }
-      }, (index + 1) * 1000);
+      }, index * 2000);
     });
-  };
-
-  const CoordinateButton = ({ actions }) => {
-    const handleButtonPress = () => {
-      handleCoordinateAction(actions);
-    };
-
-    return <Button title="Run" onPress={handleButtonPress} />;
   };
 
   const moveByCoordinates = (x, y) => {
@@ -101,7 +97,10 @@ const MainScreen = ({ navigation }) => {
   };
 
   const renderImageItem = ({ item }) => (
-    <TouchableOpacity style={styles.imageItem} onPress={() => handleImagePress(item)}>
+    <TouchableOpacity
+      style={styles.imageItem}
+      onPress={() => handleImagePress(item)}
+    >
       <Image source={item} style={styles.thumbnailImage} />
     </TouchableOpacity>
   );
@@ -109,15 +108,17 @@ const MainScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.topBox} {...panResponder.panHandlers}>
-        <TouchableOpacity style={styles.runButton} onPress={() => handleCoordinateAction([
-          { type: 'moveX', value: 50 },
-          { type: 'moveY', value: 50 },
-          { type: 'moveXY', valueX: 20, valueY: 20 },
-        ])}>
+        <TouchableOpacity
+          style={styles.runButton}
+          onPress={() => handleCoordinateAction(route?.params?.data)}
+        >
           <Text style={styles.runButtonText}>Run</Text>
         </TouchableOpacity>
         {selectedImage ? (
           <View style={styles.selectedImageContainer}>
+            {inputText !== '' && (
+              <Text style={styles.placeholderText}>{inputText}</Text>
+            )}
             <Image
               source={selectedImage}
               style={[
@@ -131,9 +132,6 @@ const MainScreen = ({ navigation }) => {
                 },
               ]}
             />
-            {inputText !== '' && (
-              <Text style={styles.inputTextOverlay}>{inputText}</Text>
-            )}
           </View>
         ) : (
           <Text style={styles.placeholderText}>Select Sprite</Text>
@@ -161,7 +159,11 @@ const MainScreen = ({ navigation }) => {
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Text:</Text>
-          <TextInput style={styles.input} value={inputText} onChangeText={setInputText} />
+          <TextInput
+            style={styles.input}
+            value={inputText}
+            onChangeText={setInputText}
+          />
         </View>
         <Button title="↺" onPress={reset} />
       </View>
@@ -221,6 +223,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   placeholderText: {
+    position: 'absolute',
+    top: 50,
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -229,6 +233,7 @@ const styles = StyleSheet.create({
     height: '70%',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
   selectedImage: {
     width: '50%',
@@ -252,7 +257,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgrey',
     padding: 5,
-    width: 40, 
+    width: 40,
   },
   buttonContainer: {
     marginBottom: 10,
@@ -285,13 +290,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: 'white',
-  },
-  inputTextOverlay: {
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    padding: 5,
-    fontSize: 12,
   },
 });
 
