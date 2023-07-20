@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const Menu = ({ handleMenuPress, handleSubMenuPress, activeMenu, activeSubMenu, handleAddSubpart }) => {
   const subparts = {
-    motion: ['moveX', 'moveY', 'moveXY','goToOrigin'],
-    looks: ['Say Hello', 'Think Hmm'],
+    motion: ['moveXby50', 'moveYby50', 'moveXYby50','goToOrigin'],
+    looks: ['sayHello', 'thinkHmm'],
     control: ['Flag', 'Subpart 2'],
     events: ['Subpart 1', 'Subpart 2'],
   };
