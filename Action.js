@@ -1,28 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const Action = ({ selectedSubparts, handleRemoveSubpart }) => {
   const [inputValue, setInputValue] = useState('');
-  const navigation = useNavigation();
+  const [subpartSelected, setSelectedSubparts] = useState([])
 
+  const navigation = useNavigation();
+  
   const handleAddSubpart = () => {
     if (inputValue) {
       handleRemoveSubpart([...selectedSubparts, inputValue]);
       setInputValue('');
     }
   };
-
+  
   const handleSaveAllInputs = () => {
-    
     storeSelectedSubparts(selectedSubparts);
-    navigation.navigate('MainScreen'); // Navigate to the main screen
   };
 
   const storeSelectedSubparts = (subparts) => {
-    console.log('Stored Selected Subparts:', subparts);
-  };
 
+    console.log('Stored Selected Subparts:', subparts);
+    setSelectedSubparts(subparts)
+    navigation.navigate('MainScreen',{data:subparts})
+  };
+  console.log(subparts)
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Action</Text>
@@ -84,5 +87,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 
 export default Action;
