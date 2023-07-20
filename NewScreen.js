@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View ,Text} from 'react-native';
 import Menu from './Menu';
 import Action from './Action';
 
-const NewScreen = () => {
+
+const NewScreen = (navigation) => {
   const [activeMenu, setActiveMenu] = useState(null);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
   const [selectedSubparts, setSelectedSubparts] = useState([]);
@@ -26,7 +27,9 @@ const NewScreen = () => {
     setSelectedSubparts(updatedSubparts);
   };
 
+
   return (
+
     <View style={{ flex: 1, flexDirection: 'row' }}>
       <Menu
         handleMenuPress={handleMenuPress}
@@ -40,6 +43,9 @@ const NewScreen = () => {
         handleRemoveSubpart={handleRemoveSubpart}
       />
     </View>
+
+
+
   );
 };
 
